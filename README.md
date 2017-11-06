@@ -3,10 +3,19 @@ Interim script to take output from Google schedule and translate into a parset f
 
 ## Input
 - Input text file containing source information (specified in command line)
+- Obs type: either "single" or "multi" for different beam observations
+- Software version: defaults to 2.6, but can be specified otherwise
 
 ## To run
 ``` 
-python apgen.py input.txt
+python apgen.py [INPUT FILE] [OBS TYPE] [SOFTWARE VERSION]
+```
+Examples:
+```
+python apgen.py input_03112017.txt multi 2.7
+```
+```
+python apgen.py input_03112017.txt single 2.6
 ```
 
 ## Solutions to known issues
