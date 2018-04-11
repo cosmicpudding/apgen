@@ -5,6 +5,7 @@ Script to take input from a text file and translate into a parset for the APERTI
 - Input text file containing source information
 - Obs type: currently the only option is the "ag" setting (default)
 - Software version: defaults to 2.7, but can be specified if needed
+
 Note: parameters can be specified (in order) on command line, or defaults edited within the script
 
 ## To run
