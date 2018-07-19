@@ -190,7 +190,7 @@ print(list(d.keys()))
 
 # Start the file
 out = open('%s_params.txt' % fname.split('.')[0],'w')
-out.write('#!/bin/bash\n# Script to create parsets for APERTIF\n# Original form by Boudewijn Hut 25/07/2017\n# Adapted by V.A. Moss 27/10/2017\n# Last updated by V.A. Moss 05/04/2018\n\n# values that change per measurement\n')
+out.write('#!/bin/bash\n# Script to create parsets for APERTIF\n# Original form by Boudewijn Hut 25/07/2017\n# Adapted by V.A. Moss 27/10/2017\n# Last updated by V.A. Moss 19/07/2018\n\n# values that change per measurement\n')
 out.flush()
 
 # Task ID counter
