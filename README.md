@@ -17,10 +17,10 @@ Examples:
 python apgen.py
 ```
 ```
-python apgen.py input_03112017.txt ag 2.7
+python apgen.py input_03112017.txt ag 2.7 bfweights_square_39p1_20180502_f4800_1005.dat
 ```
 ```
-python apgen.py input_03112017.txt ag 2.6
+python apgen.py input_03112017.txt ag 2.6 ebm_20171214T104900.dat
 ```
 
 ## Solutions to known issues
