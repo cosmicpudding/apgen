@@ -4,23 +4,23 @@ Script to take input from a text file and translate into a parset for the APERTI
 ## Input
 - Input text file containing source information
 - Obs type: currently the only option is the "ag" setting (default)
-- Software version: defaults to 2.7, but can be specified if needed
+- Weight pattern: defaults to ebm_20171214T104900.dat (element beams)
 
 Note: parameters can be specified (in order) on command line, or defaults edited within the script
 
 ## To run
 ``` 
-python apgen.py [INPUT FILE] [OBS TYPE] [SOFTWARE VERSION]
+python apgen.py [INPUT FILE] [OBS TYPE] [WEIGHT PATTERN]
 ```
 Examples:
 ```
 python apgen.py
 ```
 ```
-python apgen.py input/input_20180720.txt ag 2.7 bfweights_square_39p1_20180502_f4800_1005.dat
+python apgen.py input/input_20180720.txt ag bfweights_square_39p1_20180502_f4800_1005.dat
 ```
 ```
-python apgen.py input/input_20180720.txt ag 2.6 ebm_20171214T104900.dat
+python apgen.py input/input_20180720.txt ag ebm_20171214T104900.dat
 ```
 
 ## Solutions to known issues
