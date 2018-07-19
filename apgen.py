@@ -32,15 +32,15 @@ try:
 except:
 	obstype = 'ag'
 
-# Get the software version currently used
-try:
-	softver = sys.argv[3]
-except:
-	softver = '3-r5805'
+# # Get the software version currently used
+# try:
+# 	softver = sys.argv[3]
+# except:
+# 	softver = '3-r5805'
 
 # Specify the weight pattern
 try:
-	weightpatt = sys.argv[4]
+	weightpatt = sys.argv[3]
 except:
 
 	# Element beams
@@ -145,22 +145,22 @@ else:
 
 ################################################
 
-# Deal with the software version
-if obstype == 'ag' and softver != '3-r5805':
-	f = open('create_parset_ag.txt','rU').read()
-	f2 = ('SR="%s"' % softver).join(f.split('SR="3-r5805"'))
+# # Deal with the software version
+# if obstype == 'ag' and softver != '3-r5805':
+# 	f = open('create_parset_ag.txt','rU').read()
+# 	f2 = ('SR="%s"' % softver).join(f.split('SR="3-r5805"'))
 
-	out = open('temp_create.txt','w')
-	out.write(f2)
-	out.flush()
-	usefile = 'temp_create.txt'
+# 	out = open('temp_create.txt','w')
+# 	out.write(f2)
+# 	out.flush()
+# 	usefile = 'temp_create.txt'
 
-else:
-	f = open('create_parset_ag.txt','rU').read()
-	out = open('temp_create.txt','w')
-	out.write(f)
-	out.flush()
-	usefile = 'temp_create.txt'
+# else:
+f = open('create_parset_ag.txt','rU').read()
+out = open('temp_create.txt','w')
+out.write(f)
+out.flush()
+usefile = 'temp_create.txt'
 
 ################################################
 
