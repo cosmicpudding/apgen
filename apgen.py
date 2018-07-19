@@ -1,26 +1,32 @@
-#!/usr/bin/env python2.7
-
 # APERTIF PARSET GENERATOR (apgen.py)
 # Input: source text file
 # V.A. Moss 05/04/2018 (vmoss.astro@gmail.com)
 __author__ = "V.A. Moss"
-__date__ = "$05-apr-2018 16:00:00$"
-__version__ = "1.0"
+__date__ = "$19-jul-2018 17:00:00$"
+__version__ = "1.1"
 
 # Imports
 import os
 import sys
 from astropy.io import ascii
+from beamcalc import *
 from datetime import datetime,timedelta
+
+
+# scopes: edit this to suit the current available scopes!
+scopes = '[RT2, RT3, RT4, RT5, RT6, RT7, RT8, RT9, RTA, RTB, RTC, RTD]'
+
+# renumber scans
+renum = False 
 
 # Read in the source file
 try:
 	fname = sys.argv[1]
 except:
-	fname = 'input.txt'
+	fname = 'input/input.txt'
 
 # Get the observation type:
-# Note: can be "multi" or "single"
+# Note: currently only "ag" is used
 try:
 	obstype = sys.argv[2]
 except:
@@ -31,6 +37,17 @@ try:
 	softver = sys.argv[3]
 except:
 	softver = '2.7'
+
+# Specify the weight pattern
+try:
+	softver = sys.argv[4]
+except:
+
+	# Element beams
+	weightpatt = 'ebm_20171214T104900.dat'
+
+	# Compound beams
+	#weightpatt = 'bfweights_square_39p1_20180502_f4800_1005.dat'
 
 def ra2dec(ra):
     if not ra:
@@ -57,16 +74,34 @@ def writesource(i,j,scan,date,stime,date2,etime,lo,sub1,src,ra,dec,old_date,old_
 
 	# Determine the execute time
 	if j == 0:
-		exetime = 'utcnow()'
-		exectime = None
+
+		# Old method, needs to change!! 
+		#exetime = 'utcnow()'
+		#exectime = None
+ 
+		# Set the exec time to 10 min before start of scan (9/05/2018 VAM)
+		exectime = datetime.strptime(date+stime,'%Y-%m-%d%H:%M:%S')-timedelta(minutes=10)
+		exetime = str(exectime.date()) + ' ' + str(exectime.time())
+
 	else:
+
+		sdate_dt = datetime.strptime(str(date)+str(stime),'%Y-%m-%d%H:%M:%S')
+
 		# Make it a 10 second gap between execution of the next parset (2/2/18 VM)
 		exectime = datetime.strptime(old_date+old_etime,'%Y-%m-%d%H:%M:%S')+timedelta(seconds=10)
 		exetime = str(exectime.date()) + ' ' + str(exectime.time())
 
+		# Correct if too long
+		if (sdate_dt-exectime).seconds > 600.:
+			# Set the exec time to 10 min before start of scan (9/05/2018 VAM)
+			exectime = datetime.strptime(date+stime,'%Y-%m-%d%H:%M:%S')-timedelta(minutes=10)
+			exetime = str(exectime.date()) + ' ' + str(exectime.time())
+
+
 	# Determine what the scan id is
+	print(renum)
 	if renum != False:
-				scan = str(d['scan'][i])[:-2]+ '%.3d' % (j+1)
+				scan = str(d['scan'][i])[:-2]+ '%.2d' % (j+1)
 	if j == 0:
 
 		# Write to file (not plus=)
@@ -101,20 +136,14 @@ INTFACTORS+=( '%s')
 """ % (scan,exetime,date,stime,date2,etime,lo,sub1,src,src,ra,dec,ints))
 		out.flush()
 
-
-# scopes: edit this to suit the current available scopes!
-scopes = '[RT2, RT3, RT4, RT5, RT6, RT7, RT8, RT9, RTA, RTB, RTC]'
-# [RT2, RT3, RT4, RT5, RT6, RT7, RT8, RT9, RTA, RTB, RTC, RTD]
-
-# renumber scans
-renum =  False 
-
 # Default file to use:
 if obstype == 'ag':
 	usefile = 'create_parset_ag.txt'
 else:
-	print 'Error! This obstype does not exist...'
+	print('Error! This obstype does not exist...')
 	sys.exit()
+
+################################################
 
 # Deal with the software version
 if obstype == 'ag' and softver != '2.7':
@@ -133,9 +162,31 @@ else:
 	out.flush()
 	usefile = 'temp_create.txt'
 
+################################################
+
+# Deal with the weight pattern
+if weightpatt != 'ebm_20171214T104900.dat':
+	f = open('create_parset_ag.txt','rU').read()
+	f2 = ('WEIGHTPATTERN="%s"' % weightpatt).join(f.split('WEIGHTPATTERN="ebm_20171214T104900.dat"'))
+
+	# Write a new file
+	out = open('temp_create.txt','w')
+	out.write(f2)
+	out.flush()
+	usefile = 'temp_create.txt'
+
+else:
+	f = open('create_parset_ag.txt','rU').read()
+	out = open('temp_create.txt','w')
+	out.write(f)
+	out.flush()
+	usefile = 'temp_create.txt'
+
+################################################
+
 # Read file
 d = ascii.read(fname,delimiter='\s',guess=False)
-print d.keys() 
+print(list(d.keys())) 
 
 # Start the file
 out = open('%s_params.txt' % fname.split('.')[0],'w')
@@ -204,11 +255,11 @@ for i in range(0,len(d)):
 
 	# Write sources to file
 	writesource(i,j,scan,date,stime,date2,etime,lo,sub1,src,ra,dec,old_date,old_etime,field,ints)		
+	j+=1
 
 	# update parameters
 	old_etime = etime
 	old_date = date2
-	j+=1
 
 out.write("""# constant value for all measurements
 TELESCOPES="%s"   # "[RT2, RT3, RT4, RT5, RT6, RT7, RT8, RT9, RTA, RTB, RTC, RTD]"
@@ -222,9 +273,9 @@ if obstype == 'ag':
 	os.system('cat %s %s > %s' % (outname,usefile,outname2))
 
 else:
-	print 'You have specified something weird!'
+	print('You have specified something weird!')
 
 # Make the resultting file executable
 os.system('chmod oug+x %s' % outname2)
-os.system('rm -rf temp_create.txt *params.txt')
+os.system('rm -rf temp_create.txt input/*params.txt')
 

@@ -1,3 +1,48 @@
+#!/bin/bash
+# Script to create parsets for APERTIF
+# Original form by Boudewijn Hut 25/07/2017
+# Adapted by V.A. Moss 27/10/2017
+# Last updated by V.A. Moss 05/04/2018
+
+# values that change per measurement
+TASKIDS=(    '180330999')
+EXEC_TIMES=( '2018-03-30 13:25:00')
+START_TIMES=('2018-03-30 13:35:00')
+STOP_TIMES=( '2018-03-30 13:40:00')
+LO1FREQS=(   '4800')
+SUBBAND1=(    137)
+SOURCENAMES=('3C48')
+FIELDNAMES=('3C48')
+SOURCE_RAS=( '24.4221')
+SOURCE_DECS=('33.1598')
+INTFACTORS=( '30')
+
+TASKIDS+=(    '180330998')
+EXEC_TIMES+=( '2018-03-30 13:40:10')
+START_TIMES+=('2018-03-30 13:41:00')
+STOP_TIMES+=( '2018-03-30 13:46:00')
+LO1FREQS+=(   '4800')
+SUBBAND1+=(    137)
+SOURCENAMES+=('3C48_11')
+FIELDNAMES+=('3C48_11')
+SOURCE_RAS+=( '23.5262')
+SOURCE_DECS+=('32.4098')
+INTFACTORS+=( '30')
+
+TASKIDS+=(    '180330997')
+EXEC_TIMES+=( '2018-03-30 13:46:10')
+START_TIMES+=('2018-03-30 13:47:00')
+STOP_TIMES+=( '2018-03-30 13:52:00')
+LO1FREQS+=(   '4800')
+SUBBAND1+=(    137)
+SOURCENAMES+=('3C48_35')
+FIELDNAMES+=('3C48_35')
+SOURCE_RAS+=( '26.2139')
+SOURCE_DECS+=('33.1598')
+INTFACTORS+=( '30')
+
+# constant value for all measurements
+TELESCOPES="[RT2, RT3, RT4, RT5, RT6, RT7, RT8, RT9, RTA, RTB, RTC, RTD]"   # "[RT2, RT3, RT4, RT5, RT6, RT7, RT8, RT9, RTA, RTB, RTC, RTD]"
 
 # constant value for all measurements
 WEIGHTPATTERN="ebm" # central element beam (PAF element 27X)
