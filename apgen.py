@@ -36,11 +36,11 @@ except:
 try:
 	softver = sys.argv[3]
 except:
-	softver = '2.7'
+	softver = '3-r5805'
 
 # Specify the weight pattern
 try:
-	softver = sys.argv[4]
+	weightpatt = sys.argv[4]
 except:
 
 	# Element beams
@@ -146,9 +146,9 @@ else:
 ################################################
 
 # Deal with the software version
-if obstype == 'ag' and softver != '2.7':
+if obstype == 'ag' and softver != '3-r5805':
 	f = open('create_parset_ag.txt','rU').read()
-	f2 = ('SR="%s"' % softver).join(f.split('SR="2.7"'))
+	f2 = ('SR="%s"' % softver).join(f.split('SR="3-r5805"'))
 
 	out = open('temp_create.txt','w')
 	out.write(f2)
